@@ -9,11 +9,16 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class Servidor {
 	public static void main(String[] args) throws IOException {
+		HttpServer server = start();
+		System.in.read();
+		server.stop();
+	}
+
+	public static HttpServer start() {
 		URI uri = URI.create("http://localhost:8080");
 		ResourceConfig config = new ResourceConfig().packages("br.com.alura.loja");
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
 		System.out.println("Rodando em " + uri);
-		System.in.read();
-		server.stop();
+		return server;
 	}
 }
