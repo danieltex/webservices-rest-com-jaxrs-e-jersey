@@ -1,4 +1,4 @@
-package br.com.alura.loja;
+package br.com.alura.loja.resource;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,9 +13,10 @@ import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
 
+import br.com.alura.loja.Servidor;
 import br.com.alura.loja.modelo.Carrinho;
 
-public class ClienteTest {
+public class CarrinhoResourceTest {
 	private HttpServer server;
 
 	@Before
@@ -32,7 +33,7 @@ public class ClienteTest {
 	public void testaRequestRetornaCarrinhoEsperado() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
-		String conteudo = target.path("/carrinhos").request().get(String.class);
+		String conteudo = target.path("/carrinhos").queryParam("id", 1L).request().get(String.class);
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
 		assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
 	}
