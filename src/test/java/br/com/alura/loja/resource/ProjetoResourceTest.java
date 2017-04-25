@@ -9,6 +9,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +35,12 @@ public class ProjetoResourceTest {
 
 	@Test
 	public void testCanAccessProjetos() {
-		URI uri = URI.create("http://localhost:8080");
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target(uri);
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFilter());
+		Client client = ClientBuilder.newClient(config);
+
+		WebTarget target = client.target(URI.create("http://localhost:8080"));
 		String content = target.path("/projetos/1").request().get(String.class);
-		System.out.println(content);
 		Projeto projeto = (Projeto) new XStream().fromXML(content);
 		assertEquals("Minha loja", projeto.getNome());
 	}
